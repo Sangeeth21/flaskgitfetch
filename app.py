@@ -13,64 +13,47 @@ def get_repos(username):
     responses = requests.get(f"https://api.github.com/users/{username}/repos", headers=headers)
 
     if response.status_code == 200 and responses.status_code == 200:
-        output_dir='./output'
+        output_dir = './output'
         os.makedirs(output_dir, exist_ok=True)
         output_file = os.path.splitext(username)[0] + ".json"
         output_path = os.path.join(output_dir, output_file)
         data = {"user_info": response.json(), "repos": responses.json()}
-        simplifyingjson(data)
+        simplify_json(data)
         with open(output_path, 'w') as f:
             json.dump(data, f, indent=4)
         print(f"{username} saved to {output_path}")
-        return jsonify({"message": f"{username} fetched from github and saved to {output_path} successfully"})
+        return {"message": f"{username} fetched from github and saved to {output_path} successfully"}
     else:
         print("Error:", response.status_code, responses.status_code)
-        return jsonify({"message": "Error fetching data from GitHub API"}), 500
+        return {"message": "Error fetching data from GitHub API"}, 500
 
 
-def simplifyingjson(github_data):
+def simplify_json(github_data):
     user_info = github_data["user_info"]
     keys_to_keep = ["login", "url", "name", "company", "location", "email", "bio", "twitter_username", "public_repos", "followers", "following", "created_at", "updated_at"]
     # Modify the dictionary to keep only the desired keys and their values
     user_info = {k: v for k, v in user_info.items() if k in keys_to_keep}
     print(f"user_info: {user_info}")
 
-
-
     repos_list = github_data["repos"]
-    sorted_repo_details = {}
-    for i in range(len(repos_list)):
-        dict_name = f"dict{i}"
-        sorted_repo_details[dict_name] = {}
+    sorted_repo_details = []
     for repos in repos_list:
-        i=0
         repo_keys_to_keep = ["name", "full_name", "private", "description", "url", "commits_url", "created_at",
-                             "updated_at", "pushed_at", "clone_url", "size", "watchers_count", "language", ""]
+                             "updated_at", "pushed_at", "clone_url", "size", "watchers_count", "language", "owner"]
+        # Modify the dictionary to keep only the desired keys and their values
+        repo_dict = {k: v for k, v in repos.items() if k in repo_keys_to_keep}
+        owner = repo_dict.pop("owner")
+        repo_dict["owner_name"] = owner["login"]
+        repo_dict["owner_url"] = owner["url"]
+        sorted_repo_details.append(repo_dict)
 
-        sorted_repo_details[i] = {k: v for k, v in repos.items() if k in repo_keys_to_keep  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        repo_name = ""
-        repo_name = repo_name + repos["name"]
-        repos["name"] = {}
-        # new_repos_dict[repo_name]
-        owner = repos["owner"]["login"]
-        owner_url = repos["owner"]["url"]
-        repo_keys_to_keep = ["name", "full_name", "private", "description", "url", "commits_url", "created_at", "updated_at", "pushed_at", "clone_url", "size", "watchers_count", "language", ""]
-        repo_name = {k: v for k, v in user_info.items() if k in keys_to_keep}
-        repo_name["owner_name"] = owner
-        repo_name["owner_url"] = owner_url
-        print(repo_name)
-
+    github_data["user_info"] = user_info
+    github_data["repos"] = sorted_repo_details
+    # print(github_data)
+    output_dir='./success'
+    os.makedirs(output_dir, exist_ok=True)
+    username = github_data["user_info"]["login"]
+    output_path = os.path.join(output_dir, f"{username}.json")
+    with open(output_path, 'w') as f:
+        json.dump(github_data, f, indent=4)
+    print(f"data saved to {output_path}")

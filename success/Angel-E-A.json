@@ -1,0 +1,36 @@
+{
+    "user_info": {
+        "login": "Angel-E-A",
+        "url": "https://api.github.com/users/Angel-E-A",
+        "name": null,
+        "company": null,
+        "location": null,
+        "email": null,
+        "bio": null,
+        "twitter_username": null,
+        "public_repos": 1,
+        "followers": 0,
+        "following": 0,
+        "created_at": "2021-06-07T06:53:07Z",
+        "updated_at": "2021-06-07T06:53:07Z"
+    },
+    "repos": [
+        {
+            "name": "ShapeAi_Python_Machine_Learning",
+            "full_name": "Angel-E-A/ShapeAi_Python_Machine_Learning",
+            "private": false,
+            "description": null,
+            "url": "https://api.github.com/repos/Angel-E-A/ShapeAi_Python_Machine_Learning",
+            "commits_url": "https://api.github.com/repos/Angel-E-A/ShapeAi_Python_Machine_Learning/commits{/sha}",
+            "created_at": "2021-06-07T07:41:49Z",
+            "updated_at": "2021-06-07T08:04:32Z",
+            "pushed_at": "2021-06-07T08:04:29Z",
+            "clone_url": "https://github.com/Angel-E-A/ShapeAi_Python_Machine_Learning.git",
+            "size": 4,
+            "watchers_count": 0,
+            "language": "Jupyter Notebook",
+            "owner_name": "Angel-E-A",
+            "owner_url": "https://api.github.com/users/Angel-E-A"
+        }
+    ]
+}
